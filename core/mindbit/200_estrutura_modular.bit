@@ -1,0 +1,3 @@
+regra:se pasta contém 'core', ela deve conter apenas lógica interna
+regra:se pasta contém 'utils', deve conter funções reutilizáveis
+regra:arquivos devem ser pequenos e com propósito único
