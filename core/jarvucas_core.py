@@ -6,9 +6,17 @@ import difflib
 from mindbit_encoder import carregar_pensamento_bit  # leitura de .bit
 
 class JarvucasIA:
-    def __init__(self, base_path="mindzip", mindbit_path="mindbit"):
-        self.base_path = base_path
-        self.mindbit_path = mindbit_path
+    def __init__(self, base_path="mindzip", mindbit_path=None):
+        """Inicializa a IA configurando os diretórios de armazenamento."""
+
+        script_dir = os.path.dirname(__file__)
+
+        self.base_path = os.path.abspath(base_path)
+
+        if mindbit_path is None:
+            mindbit_path = os.path.join(script_dir, "mindbit")
+        self.mindbit_path = os.path.abspath(mindbit_path)
+
         os.makedirs(self.base_path, exist_ok=True)
         os.makedirs(self.mindbit_path, exist_ok=True)
 

@@ -15,6 +15,8 @@ MEMORIA_FILE = BASE_DIR / "memoria.bin"
 RESPOSTAS_FILE = BASE_DIR / "respostas.bin"
 APRENDIZADO_FILE = BASE_DIR / "aprendizado.bin"
 CONTEXTO_FILE = BASE_DIR / "contexto.bin"
+REFLEXOES_FILE = BASE_DIR / "reflexoes.bin"
+PLANEJAMENTO_FILE = MINDBIT_DIR / "planejamento.bit"
 
 
 def _append_line(path: Path, line: str) -> None:
@@ -125,3 +127,33 @@ def atualizar_contexto(interpretacao: Dict[str, str]) -> None:
     with CONTEXTO_FILE.open("w", encoding="utf-8") as f:
         for k, v in ctx.items():
             f.write(f"{k}:{v}\n")
+
+
+def registrar_reflexao(frase: str, feedback: str) -> None:
+    """Guarda o feedback do usuario sobre uma resposta."""
+    linha = f"pergunta:{frase} -> feedback:{feedback}"
+    _append_line(REFLEXOES_FILE, linha)
+
+
+def _carregar_regras_planejamento() -> Dict[str, str]:
+    """Carrega regras do arquivo planejamento.bit."""
+    regras: Dict[str, str] = {}
+    if PLANEJAMENTO_FILE.exists():
+        with PLANEJAMENTO_FILE.open("r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if "->" in line:
+                    cond, acao = line.split("->", 1)
+                    regras[cond.strip()] = acao.strip()
+    return regras
+
+
+def planejar_acao() -> str:
+    """Define uma acao com base no contexto e nas regras."""
+    contexto = _carregar_contexto()
+    regras = _carregar_regras_planejamento()
+    for cond, acao in regras.items():
+        termos = [t.strip() for t in cond.replace("&", "+").split("+")]
+        if all(t in contexto.values() or contexto.get(t) for t in termos):
+            return acao
+    return ""

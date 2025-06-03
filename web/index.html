@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>JarvucasIA Web</title>
+</head>
+<body>
+<h1>JarvucasIA</h1>
+<div id="conversa"></div>
+<input id="pergunta" autocomplete="off" placeholder="Digite sua pergunta" />
+<button onclick="enviar()">Enviar</button>
+<script>
+function enviar(){
+ const q=document.getElementById('pergunta').value;
+ fetch('/perguntar?q='+encodeURIComponent(q)).then(r=>r.json()).then(d=>{
+  const div=document.getElementById('conversa');
+  div.innerHTML+=`<p><strong>Você:</strong> ${q}</p><p><strong>JarvucasIA:</strong> ${d.resposta}</p>`;
+  document.getElementById('pergunta').value='';
+ });
+}
+</script>
+</body>
+</html>
