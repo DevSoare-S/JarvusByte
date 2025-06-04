@@ -25,6 +25,8 @@ class JarvucasIA:
         if mindbit_path is None:
             mindbit_path = env_path if env_path else os.path.join(script_dir, "mindbit")
         self.mindbit_path = os.path.abspath(mindbit_path)
+        # Expõe o caminho para outros módulos através da variável de ambiente
+        os.environ["JARVUS_MINDBIT"] = self.mindbit_path
 
         os.makedirs(self.base_path, exist_ok=True)
         os.makedirs(self.mindbit_path, exist_ok=True)

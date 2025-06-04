@@ -6,6 +6,7 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs
 from pathlib import Path
+import os
 
 from core.jarvucas_core import JarvucasIA
 from modulos.interpretador import interpretar_frase
@@ -21,15 +22,19 @@ from utils.evolucao import progresso_por_area
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 BASE_DIR = (SCRIPT_DIR / "mindzip").resolve()
-MINDBIT_DIR = (SCRIPT_DIR / "core" / "mindbit").resolve()
+env_mindbit = os.getenv("JARVUS_MINDBIT")
+MINDBIT_DIR = (
+    Path(env_mindbit).resolve() if env_mindbit else (SCRIPT_DIR / "core" / "mindbit").resolve()
+)
 HTML_FILE = SCRIPT_DIR / "web" / "index.html"
 CSS_FILE = SCRIPT_DIR / "web" / "style.css"
 JS_FILE = SCRIPT_DIR / "web" / "script.js"
 GRAFICOS_FILE = SCRIPT_DIR / "web" / "graficos.js"
 CONTROLE_FILE = SCRIPT_DIR / "web" / "controle.js"
-PROPOSITO_FILE = MINDBIT_DIR / "proposito.bit"
 
 ia = JarvucasIA(base_path=str(BASE_DIR), mindbit_path=str(MINDBIT_DIR))
+MINDBIT_DIR = Path(ia.get_mindbit_path())
+PROPOSITO_FILE = MINDBIT_DIR / "proposito.bit"
 
 
 def processar_frase(frase: str) -> str:
