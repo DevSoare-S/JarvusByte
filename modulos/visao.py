@@ -7,7 +7,11 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 env_mindbit = os.getenv("JARVUS_MINDBIT")
-MINDBIT_DIR = Path(env_mindbit).resolve() if env_mindbit else (SCRIPT_DIR.parent / "core" / "mindbit").resolve()
+MINDBIT_DIR = (
+    Path(env_mindbit).resolve()
+    if env_mindbit
+    else (SCRIPT_DIR.parent / "mindbit").resolve()
+)
 VISAO_FILE = MINDBIT_DIR / "visao.bit"
 
 

@@ -14,7 +14,7 @@ class JarvucasIA:
 
         O diretório dos arquivos ``.bit`` pode ser definido via argumento ou pela
         variável de ambiente ``JARVUS_MINDBIT``. Caso nenhum seja fornecido,
-        assume-se o subdiretório ``mindbit`` ao lado deste módulo.
+        assume-se o subdiretório ``mindbit`` no nível superior ao núcleo.
         """
 
         script_dir = os.path.dirname(__file__)
@@ -23,7 +23,11 @@ class JarvucasIA:
 
         env_path = os.getenv("JARVUS_MINDBIT")
         if mindbit_path is None:
-            mindbit_path = env_path if env_path else os.path.join(script_dir, "mindbit")
+            # Quando nenhum caminho é fornecido, assumimos a pasta mindbit no
+            # diretório pai do núcleo para manter compatibilidade com a
+            # estrutura de projeto.
+            default_path = os.path.join(script_dir, "..", "mindbit")
+            mindbit_path = env_path if env_path else default_path
         self.mindbit_path = os.path.abspath(mindbit_path)
         # Expõe o caminho para outros módulos através da variável de ambiente
         os.environ["JARVUS_MINDBIT"] = self.mindbit_path

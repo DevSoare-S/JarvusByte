@@ -24,7 +24,9 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 BASE_DIR = (SCRIPT_DIR / "mindzip").resolve()
 env_mindbit = os.getenv("JARVUS_MINDBIT")
 MINDBIT_DIR = (
-    Path(env_mindbit).resolve() if env_mindbit else (SCRIPT_DIR / "core" / "mindbit").resolve()
+    Path(env_mindbit).resolve()
+    if env_mindbit
+    else (SCRIPT_DIR / "mindbit").resolve()
 )
 
 # Instancia a IA com os caminhos corretos para .bin e .bit

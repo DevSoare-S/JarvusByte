@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import List
 
-RULES_FILE = Path("core/mindbit/200_estrutura_modular.bit")
+RULES_FILE = Path("mindbit/200_estrutura_modular.bit")
 REPORT_FILE = Path("estrutura_sugerida.bit")
 
 

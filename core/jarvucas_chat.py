@@ -24,7 +24,7 @@ env_mindbit = os.getenv("JARVUS_MINDBIT")
 mindbit_dir = (
     os.path.abspath(env_mindbit)
     if env_mindbit
-    else os.path.abspath(os.path.join(script_dir, "mindbit"))
+    else os.path.abspath(os.path.join(script_dir, "..", "mindbit"))
 )
 
 ia = JarvucasIA(base_path=base_dir, mindbit_path=mindbit_dir)
