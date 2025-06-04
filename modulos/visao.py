@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+
 import os
 from pathlib import Path
 
@@ -12,6 +13,7 @@ MINDBIT_DIR = (
     if env_mindbit
     else (SCRIPT_DIR.parent / "mindbit").resolve()
 )
+
 VISAO_FILE = MINDBIT_DIR / "visao.bit"
 
 

@@ -5,6 +5,7 @@ from __future__ import annotations
 import speech_recognition as sr
 import pyttsx3
 
+
 # Indica se o modo de voz esta ativo ou nao
 VOICE_ACTIVE = False
 
@@ -20,6 +21,8 @@ def desativar_voz() -> None:
     global VOICE_ACTIVE
     VOICE_ACTIVE = False
 
+=======
+>>ai
 recognizer = sr.Recognizer()
 _tts_engine = pyttsx3.init()
 
@@ -57,6 +60,7 @@ def esperar_ativacao(palavra: str = "jarvucas") -> None:
 
 
 def entrada_hibrida(ativador: str = "jarvucas") -> str | None:
+
     """Recebe entrada textual e opcionalmente voz se ativado."""
     texto = input("Você: ").strip()
     if texto:
@@ -67,5 +71,6 @@ def entrada_hibrida(ativador: str = "jarvucas") -> str | None:
         return texto
     if not VOICE_ACTIVE:
         return None
+
     esperar_ativacao(ativador)
     return ouvir()

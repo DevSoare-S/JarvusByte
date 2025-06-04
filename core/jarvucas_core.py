@@ -9,17 +9,14 @@ from jarvucas_bin import carregar_bin, salvar_bin
 from mindbit_encoder import carregar_pensamento_bit  # leitura de .bit
 
 class JarvucasIA:
-    def __init__(self, base_path: str = "mindzip", mindbit_path: str | None = None) -> None:
-        """Inicializa a IA e garante os caminhos corretos.
 
-        O diretório dos arquivos ``.bit`` pode ser definido via argumento ou pela
-        variável de ambiente ``JARVUS_MINDBIT``. Caso nenhum seja fornecido,
-        assume-se o subdiretório ``mindbit`` no nível superior ao núcleo.
-        """
+    def __init__(self, base_path="mindzip", mindbit_path=None):
+        """Inicializa a IA configurando os diretórios de armazenamento."""
 
         script_dir = os.path.dirname(__file__)
 
         self.base_path = os.path.abspath(base_path)
+
 
         env_path = os.getenv("JARVUS_MINDBIT")
         if mindbit_path is None:
@@ -31,6 +28,8 @@ class JarvucasIA:
         self.mindbit_path = os.path.abspath(mindbit_path)
         # Expõe o caminho para outros módulos através da variável de ambiente
         os.environ["JARVUS_MINDBIT"] = self.mindbit_path
+
+
 
         os.makedirs(self.base_path, exist_ok=True)
         os.makedirs(self.mindbit_path, exist_ok=True)

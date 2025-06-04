@@ -6,7 +6,9 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs
 from pathlib import Path
+
 import os
+=======
 
 from core.jarvucas_core import JarvucasIA
 from modulos.interpretador import interpretar_frase
@@ -16,6 +18,7 @@ from modulos.memoria import (
     atualizar_contexto,
     detectar_padrao_visao,
 )
+
 from modulos.fala import ativar_voz
 from modulos.estudo import estudar_tema
 from utils.evolucao import progresso_por_area
@@ -39,6 +42,7 @@ MINDBIT_DIR = Path(ia.get_mindbit_path())
 PROPOSITO_FILE = MINDBIT_DIR / "proposito.bit"
 
 
+
 def processar_frase(frase: str) -> str:
     analise = interpretar_frase(frase)
     registrar_memoria(analise)
@@ -51,6 +55,7 @@ def processar_frase(frase: str) -> str:
 
 class JarvucasHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
+
         if self.path == "/style.css":
             self.send_response(200)
             self.send_header("Content-Type", "text/css")
@@ -101,6 +106,7 @@ class JarvucasHandler(BaseHTTPRequestHandler):
             texto = PROPOSITO_FILE.read_text(encoding="utf-8") if PROPOSITO_FILE.exists() else ""
             self.wfile.write(texto.encode())
             return
+
         if self.path.startswith("/perguntar"):
             query = parse_qs(self.path.split("?", 1)[1]) if "?" in self.path else {}
             frase = query.get("q", [""])[0]

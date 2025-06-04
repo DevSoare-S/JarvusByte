@@ -13,6 +13,7 @@ from __future__ import annotations
 import json
 import re
 import os
+
 from pathlib import Path
 from typing import List
 
@@ -26,12 +27,14 @@ from modulos.interpretador import interpretar_frase, carregar_palavras, _append_
 # Diretórios base do projeto
 SCRIPT_DIR = Path(__file__).resolve().parent
 BASE_DIR = (SCRIPT_DIR.parent / "mindzip").resolve()
+
 env_mindbit = os.getenv("JARVUS_MINDBIT")
 MINDBIT_DIR = (
     Path(env_mindbit).resolve()
     if env_mindbit
     else (SCRIPT_DIR.parent / "mindbit").resolve()
 )
+
 VIDEOS_DIR = (SCRIPT_DIR.parent / "videos").resolve()
 
 # Arquivos gerados pelo aprendizado de vídeo
