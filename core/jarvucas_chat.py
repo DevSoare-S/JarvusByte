@@ -155,4 +155,6 @@ def loop_conversa() -> None:
 
 
 if __name__ == "__main__":
-    loop_conversa()
+    tecla = input("Pressione K para ativar voz ou ENTER para sair: ").strip().lower()
+    if tecla == "k":
+        loop_conversa()
