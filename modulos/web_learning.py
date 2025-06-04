@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import time
+import os
+
+
 from pathlib import Path
 from typing import List
 
@@ -14,7 +17,14 @@ from modulos.interpretador import interpretar_frase
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 BASE_DIR = (SCRIPT_DIR.parent / "mindzip").resolve()
-MINDBIT_DIR = (SCRIPT_DIR.parent / "core" / "mindbit").resolve()
+
+env_mindbit = os.getenv("JARVUS_MINDBIT")
+MINDBIT_DIR = (
+    Path(env_mindbit).resolve()
+    if env_mindbit
+    else (SCRIPT_DIR.parent / "mindbit").resolve()
+)
+
 
 
 def buscar_conhecimento_web(topico: str) -> str:

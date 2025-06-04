@@ -4,7 +4,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import os
+
 from core.jarvucas_core import JarvucasIA
+from core.gaia import GAIA
+
 from modulos.fala import falar, ouvir, entrada_hibrida
 from modulos.interpretador import interpretar_frase
 from modulos.visao import consultar_visao
@@ -20,10 +24,20 @@ from modulos.memoria import (
 # Diretórios base relativos a este arquivo
 SCRIPT_DIR = Path(__file__).resolve().parent
 BASE_DIR = (SCRIPT_DIR / "mindzip").resolve()
-MINDBIT_DIR = (SCRIPT_DIR / "core" / "mindbit").resolve()
+
+env_mindbit = os.getenv("JARVUS_MINDBIT")
+MINDBIT_DIR = (
+    Path(env_mindbit).resolve()
+    if env_mindbit
+    else (SCRIPT_DIR / "mindbit").resolve()
+)
 
 # Instancia a IA com os caminhos corretos para .bin e .bit
 ia = JarvucasIA(base_path=str(BASE_DIR), mindbit_path=str(MINDBIT_DIR))
+MINDBIT_DIR = Path(ia.get_mindbit_path())
+gaia = GAIA()
+
+
 
 
 
@@ -84,6 +98,9 @@ def loop_inteligente() -> None:
 
         resposta = interpretar(frase)
         responder(resposta)
+
+        gaia.executar_ciclo()
+
         if resposta:
             falar("Isso te ajudou?")
             feedback = ouvir()

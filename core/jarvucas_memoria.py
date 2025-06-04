@@ -4,11 +4,17 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Dict
+import os
 
 # Diretórios base calculados a partir deste arquivo para independência do local de execução
 SCRIPT_DIR = Path(__file__).resolve().parent
 BASE_DIR = (SCRIPT_DIR.parent / "mindzip").resolve()
-MINDBIT_DIR = (SCRIPT_DIR / "mindbit").resolve()
+env_mindbit = os.getenv("JARVUS_MINDBIT")
+MINDBIT_DIR = (
+    Path(env_mindbit).resolve()
+    if env_mindbit
+    else (SCRIPT_DIR.parent / "mindbit").resolve()
+)
 VISAO_FILE = MINDBIT_DIR / "visao.bit"
 
 MEMORIA_FILE = BASE_DIR / "memoria.bin"

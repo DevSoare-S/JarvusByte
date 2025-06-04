@@ -2,12 +2,21 @@
 
 from __future__ import annotations
 
+
+import os
 from pathlib import Path
 
 from modulos.fala import falar
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-MINDBIT_DIR = (SCRIPT_DIR.parent / "core" / "mindbit").resolve()
+
+env_mindbit = os.getenv("JARVUS_MINDBIT")
+MINDBIT_DIR = (
+    Path(env_mindbit).resolve()
+    if env_mindbit
+    else (SCRIPT_DIR.parent / "mindbit").resolve()
+)
+
 
 
 def _append_to_bit(path: Path, line: str) -> None:

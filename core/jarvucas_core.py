@@ -3,9 +3,13 @@ import json
 import hashlib
 import time
 import difflib
+import pickle
+
+from jarvucas_bin import carregar_bin, salvar_bin
 from mindbit_encoder import carregar_pensamento_bit  # leitura de .bit
 
 class JarvucasIA:
+
     def __init__(self, base_path="mindzip", mindbit_path=None):
         """Inicializa a IA configurando os diretórios de armazenamento."""
 
@@ -13,12 +17,26 @@ class JarvucasIA:
 
         self.base_path = os.path.abspath(base_path)
 
+
+        env_path = os.getenv("JARVUS_MINDBIT")
         if mindbit_path is None:
-            mindbit_path = os.path.join(script_dir, "mindbit")
+            # Quando nenhum caminho é fornecido, assumimos a pasta mindbit no
+            # diretório pai do núcleo para manter compatibilidade com a
+            # estrutura de projeto.
+            default_path = os.path.join(script_dir, "..", "mindbit")
+            mindbit_path = env_path if env_path else default_path
         self.mindbit_path = os.path.abspath(mindbit_path)
+        # Expõe o caminho para outros módulos através da variável de ambiente
+        os.environ["JARVUS_MINDBIT"] = self.mindbit_path
+
+
 
         os.makedirs(self.base_path, exist_ok=True)
         os.makedirs(self.mindbit_path, exist_ok=True)
+
+    def get_mindbit_path(self) -> str:
+        """Retorna o caminho absoluto para a pasta de conhecimento simbólico."""
+        return self.mindbit_path
 
     def pensar(self, tipo, topico, conteudo, raciocinio):
         return {
@@ -38,26 +56,26 @@ class JarvucasIA:
         return f"@{pensamento['tipo'].upper()}:{pensamento['topico']}->{pensamento['conteudo']}|{pensamento['raciocinio']}"
 
     def compactar_bytes(self, pensamento):
+        """Mantida para compatibilidade; retorna bytes JSON."""
         return json.dumps(pensamento).encode("utf-8")
 
     def salvar_pensamento(self, pensamento, nome_id=None):
         if not nome_id:
             nome_id = hashlib.sha1(json.dumps(pensamento).encode()).hexdigest()[:8]
-        with open(f"{self.base_path}/{nome_id}.bin", "wb") as f:
-            f.write(self.compactar_bytes(pensamento))
+        # Utiliza pickle para armazenar pensamentos binarios
+        salvar_bin(os.path.join(self.base_path, f"{nome_id}.bin"), [pensamento])
         return nome_id
 
     def carregar_pensamentos(self):
         pensamentos = []
 
-        # 🧠 1. Carrega blocos .bin (JSON simples)
+        # 🧠 1. Carrega blocos .bin serializados com pickle
         for file in os.listdir(self.base_path):
             if file.endswith(".bin"):
                 try:
-                    with open(os.path.join(self.base_path, file), "rb") as f:
-                        raw = f.read().decode("utf-8")
-                        pensamento = json.loads(raw)
-                        pensamentos.append(pensamento)
+                    caminho = os.path.join(self.base_path, file)
+                    dados = carregar_bin(caminho)
+                    pensamentos.extend(dados)
                 except Exception as e:
                     print(f"[ERRO] .bin {file}: {e}")
 

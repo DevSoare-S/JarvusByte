@@ -3,21 +3,23 @@
 <head>
 <meta charset="utf-8" />
 <title>JarvucasIA Web</title>
+
+<link rel="stylesheet" href="/style.css" />
 </head>
 <body>
 <h1>JarvucasIA</h1>
-<div id="conversa"></div>
+<div id="proposito"></div>
+<div id="conversa" class="chat"></div>
 <input id="pergunta" autocomplete="off" placeholder="Digite sua pergunta" />
-<button onclick="enviar()">Enviar</button>
-<script>
-function enviar(){
- const q=document.getElementById('pergunta').value;
- fetch('/perguntar?q='+encodeURIComponent(q)).then(r=>r.json()).then(d=>{
-  const div=document.getElementById('conversa');
-  div.innerHTML+=`<p><strong>Você:</strong> ${q}</p><p><strong>JarvucasIA:</strong> ${d.resposta}</p>`;
-  document.getElementById('pergunta').value='';
- });
-}
-</script>
-</body>
+<button id="enviar">Enviar</button>
+<button id="ativar">Ativar voz</button>
+<button id="estudar">Estudar acompanhado</button>
+<canvas id="grafico" width="400" height="200"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/script.js"></script>
+<script src="/graficos.js"></script>
+<script src="/controle.js"></script>
+
+</head>
+
 </html>

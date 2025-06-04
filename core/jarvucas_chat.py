@@ -17,11 +17,18 @@ from jarvucas_memoria import (
 
 # Corrige caminho para acessar as pastas de dados mesmo quando o script for
 # executado a partir de diretórios diferentes
+
 script_dir = os.path.dirname(__file__)
 base_dir = os.path.abspath(os.path.join(script_dir, "..", "mindzip"))
-mindbit_dir = os.path.abspath(os.path.join(script_dir, "mindbit"))
+env_mindbit = os.getenv("JARVUS_MINDBIT")
+mindbit_dir = (
+    os.path.abspath(env_mindbit)
+    if env_mindbit
+    else os.path.abspath(os.path.join(script_dir, "..", "mindbit"))
+)
 
 ia = JarvucasIA(base_path=base_dir, mindbit_path=mindbit_dir)
+mindbit_dir = ia.get_mindbit_path()
 
 # Inicia ferramentas de voz
 recognizer = sr.Recognizer()
@@ -155,4 +162,6 @@ def loop_conversa() -> None:
 
 
 if __name__ == "__main__":
-    loop_conversa()
+    tecla = input("Pressione K para ativar voz ou ENTER para sair: ").strip().lower()
+    if tecla == "k":
+        loop_conversa()
